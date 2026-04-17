@@ -333,6 +333,22 @@ app.post('/api/plan-trip', async (req, res) => {
     }
 });
 
+const fs = require('fs');
+
+// Serve frontend if available in production
+const frontendPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendPath)) {
+    app.use(express.static(frontendPath));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(frontendPath, 'index.html'));
+    });
+} else {
+    // Basic route for health checks if frontend isn't built
+    app.get('/', (req, res) => {
+        res.send('AI Travel Planner API is running...');
+    });
+}
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
