@@ -18,7 +18,11 @@ function App() {
     setItinerary(null);
 
     try {
-      const response = await fetch('/api/plan-trip', {
+      const apiUrl = import.meta.env.MODE === 'development' 
+        ? '/api/plan-trip' 
+        : 'https://ai-travel-planner-1-06v8.onrender.com/api/plan-trip';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
